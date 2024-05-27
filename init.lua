@@ -164,8 +164,8 @@ vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic message' })
-vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
-vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
+-- vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
+-- vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
@@ -281,13 +281,13 @@ require('lazy').setup({
 
       -- Document existing key chains
       require('which-key').register {
-        ['<leader>c'] = { name = '[C]ode', _ = 'which_key_ignore' },
-        ['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
-        ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
+        --        ['<leader>c'] = { name = '[C]ode', _ = 'which_key_ignore' },
+        --        ['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
+        --        ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
         ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
-        ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
-        ['<leader>t'] = { name = '[T]oggle', _ = 'which_key_ignore' },
-        ['<leader>h'] = { name = 'Git [H]unk', _ = 'which_key_ignore' },
+        --        ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
+        --        ['<leader>t'] = { name = '[T]oggle', _ = 'which_key_ignore' },
+        --        ['<leader>h'] = { name = 'Git [H]unk', _ = 'which_key_ignore' },
       }
       -- visual mode
       require('which-key').register({
@@ -396,6 +396,7 @@ require('lazy').setup({
           previewer = false,
         })
       end, { desc = '[/] Fuzzily search in current buffer' })
+      vim.keymap.set('n', '<leader>t', ':NvimTreeOpen<CR>', { desc = 'Open file tree' })
 
       -- It's also possible to pass additional configuration options.
       --  See `:help telescope.builtin.live_grep()` for information about particular keys
@@ -468,7 +469,7 @@ require('lazy').setup({
           -- In this case, we create a function that lets us more easily define mappings specific
           -- for LSP related items. It sets the mode, buffer and description for us each time.
           local map = function(keys, func, desc)
-            vim.keymap.set('n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
+            --            vim.keymap.set('n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
           end
 
           -- Jump to the definition of the word under your cursor.
@@ -572,7 +573,13 @@ require('lazy').setup({
       local servers = {
         clangd = {},
         -- gopls = {},
-        pyright = {},
+        pyright = {
+          on_attach = on_attach,
+          settings = {
+            pyright = { autoImportCompletion = true },
+            python = { analysis = { autoSearchPaths = true, diagnosticMode = 'openFilesOnly', useLibraryCodeForTypes = true, typeCheckingMode = 'off' } },
+          },
+        },
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
@@ -840,7 +847,7 @@ require('lazy').setup({
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
     opts = {
-      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'vim', 'vimdoc', 'python', 'cpp' },
+      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'vim', 'vimdoc', 'python' },
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {
